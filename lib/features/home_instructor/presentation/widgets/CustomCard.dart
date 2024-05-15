@@ -1,7 +1,5 @@
 import 'dart:core';
-
 import 'package:flutter/material.dart';
-
 import '../../../../core/theme/app_colors.dart';
 
 class UserCardAdmin extends StatelessWidget {
@@ -42,14 +40,17 @@ class UserCardAdmin extends StatelessWidget {
         );
       },
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.3, // Adjust width for desired size
-        height: MediaQuery.of(context).size.height * 0.3, // Adjust height for desired size
+        width: MediaQuery.of(context).size.width *
+            0.3, // Adjust width for desired size
+        height: MediaQuery.of(context).size.height *
+            0.3, // Adjust height for desired size
         decoration: BoxDecoration(
+          // color: Colors.grey[800],
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(8.0),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryColor.withOpacity(0.2),
+              color: Colors.grey[600]!.withOpacity(0.5),
               blurRadius: 4.0,
               spreadRadius: 2.0,
             ),
@@ -222,7 +223,10 @@ class UserCardAdmin extends StatelessWidget {
   Widget _buildCourseDetailsDialog(BuildContext context) {
     return AlertDialog(
       backgroundColor: AppColors.primaryColor,
-      title: const Text('Course Details'),
+      title: const Text(
+        'Course Details',
+        style: TextStyle(color: AppColors.primaryColorLight),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min, // Limit content height
         children: [

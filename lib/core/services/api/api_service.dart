@@ -3,15 +3,16 @@ import 'package:educate/features/login/data/models/Login_request_body.dart';
 import 'package:injectable/injectable.dart';
 import '../../../features/home_instructor/data/models/create/Create_course_Request_body.dart';
 import '../../../features/home_instructor/data/models/create/Create_course_response_body.dart';
-import '../../../features/home_instructor/data/models/search/search_response_body.dart';
+import '../../../features/home_instructor/data/models/get_my_courses/get_courses_response_body.dart';
 import '../../../features/login/data/models/login_response_body.dart';
 import '../../../features/signup_instructor/signup_instructor/data/models/signup_instructor_request_body.dart';
 import '../../../features/signup_instructor/signup_instructor/data/models/signup_instructor_response_body.dart';
 import '../../../features/signup_student/data/models/signup_student_request_body.dart';
 import '../../../features/signup_student/data/models/signup_student_response_body.dart';
-import '../../utils/token_manager.dart';
-import 'end_point.dart';
+import '../../models/searchCategory/search_category_response_body.dart';
+import '../../models/searchName/search_response_body.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'end_point.dart';
 
 @singleton
 class ApiService {
@@ -34,6 +35,7 @@ class ApiService {
 
   static final Dio dio = Dio(BaseOptions(baseUrl: EndPoints.baseUrl));
   static final Dio dio2 = Dio(BaseOptions(baseUrl: EndPoints.baseUrl2));
+
 
   // Login
   Future<LoginResponseBody> login(LoginRequestBody loginRequestBody) async {
@@ -64,6 +66,7 @@ class ApiService {
     }
   }
 
+
   // Signup Student
   Future<SignupStudentResponseBody> signupStudent(
       SignupStudentRequestBody signupStudentRequestBody) async {
@@ -76,13 +79,20 @@ class ApiService {
     }
   }
 
+
+
   // Create Course
   Future<CreateCourseResponseBody> createCourse(
       CreateCourseRequestBody createCourseRequestBody) async {
     try {
+      // dio2.options.headers = {
+      //   "token": TokenManager.token,
+      // };
       dio2.options.headers = {
-        "token": TokenManager.token,
+        "token":
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjY0M2I4ODhiNmJmNTY2OWY0ODAyOWFkIiwicGFzc3dvcmQiOiIxMjM0NTY3In0sImlhdCI6MTcxNTcyMzQ4MiwiZXhwIjozNDM0MDM4OTY0fQ.5Gn4QQPZzDlvnG3igtwlCAJziWysu5iXhruB8Xz8XYw",
       };
+
       final response = await dio2.post(EndPoints.createCourseEndPoint,
           data: createCourseRequestBody.toJson());
       return CreateCourseResponseBody.fromJson(response.data);
@@ -91,7 +101,7 @@ class ApiService {
     }
   }
 
-  // Search Category
+
 
   // Search Name
   Future<SearchResponseBody> searchName(String name) async {
@@ -99,18 +109,58 @@ class ApiService {
       // dio2.options.headers = {
       //   "token": TokenManager.token,
       // };
-
       dio2.options.headers = {
         "token":
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjYzZmZjMzRlYWFlNzY2NTMwZTgzZTU3IiwicGFzc3dvcmQiOiIxMjM0NTY3In0sImlhdCI6MTcxNTU2MDU2OSwiZXhwIjozNDMzNzEzMTM4fQ.RwAQ5XiWpGBxzcN1KsDlb4urwiGmdzeZt_Txtl0UmBU",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjY0M2I4ODhiNmJmNTY2OWY0ODAyOWFkIiwicGFzc3dvcmQiOiIxMjM0NTY3In0sImlhdCI6MTcxNTcyMzQ4MiwiZXhwIjozNDM0MDM4OTY0fQ.5Gn4QQPZzDlvnG3igtwlCAJziWysu5iXhruB8Xz8XYw",
       };
       final response = await dio2
-          .post(EndPoints.searchName, queryParameters: {"name": name});
+          .post(EndPoints.searchName, data: {"courseName": name});
+
       return SearchResponseBody.fromJson(response.data);
     } on DioException catch (e) {
       throw Exception("API Error: ${e.toString()}");
     }
   }
+
+
+
+  // Search Category
+  Future<SearchCategoryResponseBody> searchCategory(String category) async {
+    try {
+      // dio2.options.headers = {
+      //   "token": TokenManager.token,
+      // };
+      dio2.options.headers = {
+        "token":
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjY0M2I4ODhiNmJmNTY2OWY0ODAyOWFkIiwicGFzc3dvcmQiOiIxMjM0NTY3In0sImlhdCI6MTcxNTcyMzQ4MiwiZXhwIjozNDM0MDM4OTY0fQ.5Gn4QQPZzDlvnG3igtwlCAJziWysu5iXhruB8Xz8XYw",
+      };
+      final response = await dio2.post(EndPoints.searchCategory, data: {"category": category});
+
+      return SearchCategoryResponseBody.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception("API Error: ${e.toString()}");
+    }
+  }
+
+
+  // Get My Courses
+  Future<GetCoursesResponseBody> getMyCourses() async {
+    try {
+      // dio2.options.headers = {
+      //   "token": TokenManager.token,
+      // };
+      dio2.options.headers = {
+        "token":
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwYXlsb2FkIjp7ImlkIjoiNjY0M2I4ODhiNmJmNTY2OWY0ODAyOWFkIiwicGFzc3dvcmQiOiIxMjM0NTY3In0sImlhdCI6MTcxNTcyMzQ4MiwiZXhwIjozNDM0MDM4OTY0fQ.5Gn4QQPZzDlvnG3igtwlCAJziWysu5iXhruB8Xz8XYw",
+      };
+
+      final response = await dio2.get(EndPoints.myCourses);
+      return GetCoursesResponseBody.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception("API Error: ${e.toString()}");
+    }
+  }
+
 }
 
 // void main() async {

@@ -152,7 +152,7 @@ class _SignUpInstructorState extends State<SignUpInstructor> {
                             ),
                             validator: ValidationBuilder()
                                 .minLength(1)
-                                .maxLength(5)
+                                .maxLength(3)
                                 .build(),
                           ),
                         ),
@@ -165,10 +165,6 @@ class _SignUpInstructorState extends State<SignUpInstructor> {
                               foregroundColor: Colors.white,
                             ),
                             onPressed: () {
-                              // if (!formKey.currentState!.validate()) {
-                              //   return;
-                              // }
-
                               if (formKey.currentState!.validate()) {
                                 final name = _nameController.text;
                                 final email = _emailController.text;

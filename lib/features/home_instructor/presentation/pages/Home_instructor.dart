@@ -1,12 +1,10 @@
-import 'package:educate/features/home_instructor/presentation/manager/create/home_instructor_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:form_validator/form_validator.dart';
-import 'package:lottie/lottie.dart';
 import 'package:side_sheet/side_sheet.dart';
-
-import '../../../../core/theme/app_assets.dart';
+import '../../../../config/routes/app_routes.dart';
 import '../../data/models/create/Create_course_Request_body.dart';
+import '../manager/create/home_instructor_cubit.dart';
 import '../widgets/CustomCard.dart';
 
 class HomeInstructor extends StatefulWidget {
@@ -18,8 +16,7 @@ class HomeInstructor extends StatefulWidget {
 
 class _HomeInstructorState extends State<HomeInstructor> {
   final TextEditingController _nameCourseController = TextEditingController();
-  final TextEditingController _nameSearchCourseController =
-      TextEditingController();
+  final TextEditingController _searchCourseController = TextEditingController();
   final TextEditingController _durationCourseController =
       TextEditingController();
   final TextEditingController _capacityCourseController =
@@ -29,38 +26,38 @@ class _HomeInstructorState extends State<HomeInstructor> {
   var formKey = GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context2) {
+  Widget build(BuildContext context) {
     return BlocBuilder<HomeInstructorCubit, HomeInstructorState>(
       builder: (context, state) {
-        return Form(
-          key: formKey,
-          child: Scaffold(
-            backgroundColor: Colors.grey[200],
-            appBar: AppBar(
-              backgroundColor: Colors.black,
-              title: const Center(
-                child: Text(
-                  'Home Instructor',
-                  style: TextStyle(color: Colors.white),
-                ),
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+            title: const Center(
+              child: Text(
+                'Home Instructor',
+                style: TextStyle(color: Colors.white),
               ),
-              actions: [
-                IconButton(
-                  icon: const Icon(Icons.logout, color: Colors.white),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/login');
-                  },
-                ),
-              ],
             ),
-            floatingActionButton: FloatingActionButton(
-              foregroundColor: Colors.white,
-              backgroundColor: Colors.black,
-              onPressed: () async {
-                await SideSheet.right(
-                  context: context,
-                  width: Checkbox.width * 20,
-                  body: Column(
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout, color: Colors.white),
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+                },
+              ),
+            ],
+          ),
+          floatingActionButton: FloatingActionButton(
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.black,
+            onPressed: () async {
+              await SideSheet.right(
+                context: context,
+                width: Checkbox.width * 20,
+                body: Form(
+                  key: formKey,
+                  child: Column(
                     children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
@@ -86,10 +83,15 @@ class _HomeInstructorState extends State<HomeInstructor> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           controller: _durationCourseController,
-                          validator: ValidationBuilder()
-                              .minLength(1)
-                              .maxLength(50)
-                              .build(),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter a value';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Please enter a valid number';
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                             hintText: "Duration Course",
                           ),
@@ -99,10 +101,15 @@ class _HomeInstructorState extends State<HomeInstructor> {
                         padding: const EdgeInsets.all(8.0),
                         child: TextFormField(
                           controller: _capacityCourseController,
-                          validator: ValidationBuilder()
-                              .minLength(1)
-                              .maxLength(50)
-                              .build(),
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please enter a value';
+                            }
+                            if (double.tryParse(value) == null) {
+                              return 'Please enter a valid number';
+                            }
+                            return null;
+                          },
                           decoration: const InputDecoration(
                             hintText: "Capacity Course",
                           ),
@@ -157,87 +164,148 @@ class _HomeInstructorState extends State<HomeInstructor> {
                           "Create Course",
                           style: TextStyle(fontSize: 20),
                         ),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.pushReplacementNamed(
+                                context, AppRoutes.homeInstructor);
+                          },
+                          child: const Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                );
-              },
-              child: const Icon(Icons.add),
-            ),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    color: Colors.white, // Add this line
-                    child: TextFormField(
-                      controller: _nameSearchCourseController,
-                      decoration: InputDecoration(
-                        hintText: "Search Course",
-                        prefixIcon: InkWell(
-                          onTap: () {
-                            BlocProvider.of<HomeInstructorCubit>(context)
-                                .searchCourse(_nameSearchCourseController.text);
-                          },
-                          child: const Icon(Icons.search),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
+                ),
+              );
+            },
+            child: const Icon(Icons.add),
+          ),
+          body: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  color: Colors.white,
+                  child: TextFormField(
+                    controller: _searchCourseController,
+                    decoration: InputDecoration(
+                      hintText: "Search Course",
+                      prefixIcon: InkWell(
+                        onTap: () {
+                          BlocProvider.of<HomeInstructorCubit>(context)
+                              .search(_searchCourseController.text);
+                        },
+                        child: const Icon(Icons.search),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
                     ),
                   ),
                 ),
-                BlocBuilder<HomeInstructorCubit, HomeInstructorState>(
-                  builder: (context, state) {
-                    if (state is HomeInstructorInitial) {
-                      return const Text(
-                        "Search Course",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      );
+              ),
+              BlocBuilder<HomeInstructorCubit, HomeInstructorState>(
+                builder: (context, state) {
+                  if (state is HomeInstructorInitial) {
+                    return const Text(
+                      "Search Course",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    );
+                  }
+
+                  if (state is HomeInstructorLoading) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  if (state is HomeInstructorError) {
+                    return const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text("Sorry No Course Found",
+                        style:  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      ),
+                    );
+                  }
+                  if (state is SearchSuccess) {
+                    if (state.data.isEmpty) {
+                      return const Text("No Course Found");
                     }
-                    if (state is HomeInstructorLoading) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (state is HomeInstructorSearchSuccess) {
-                      if (state.searchResponseBody.data!.isEmpty) {
-                        return const Text("No Course Found");
-                      }
-                      final courses = state.searchResponseBody.data!;
-                      return Expanded(
-                        child: GridView.count(
-                          crossAxisCount: 2,
-                          childAspectRatio: 2.5,
-                          padding: const EdgeInsets.all(8),
-                          children: courses
-                              .map(
-                                (course) => Container(
-                                  margin: const EdgeInsets.all(4.0),
-                                  padding: const EdgeInsets.all(2.0),
-                                  child: UserCardAdmin(
-                                    id: course.id,
-                                    name: course.courseName,
-                                    instructorId: course.user?.userId,
-                                    category: course.category,
-                                    capacity: course.capacity,
-                                    published: course.published,
-                                    enrolledStudents: course.enrolledStudents,
-                                    createdAt: course.createdAt,
-                                    updatedAt: course.updatedAt,
-                                    v: course.v,
-                                  ),
+
+                    var courses = state.data;
+
+                    return Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        childAspectRatio: 2.5,
+                        padding: const EdgeInsets.all(8),
+                        children: courses
+                            .map(
+                              (course) => Container(
+                                margin: const EdgeInsets.all(4.0),
+                                padding: const EdgeInsets.all(2.0),
+                                child: UserCardAdmin(
+                                  id: course.id,
+                                  name: course.courseName,
+                                  instructorId: course.user?.userId,
+                                  category: course.category,
+                                  capacity: course.capacity,
+                                  published: course.published,
+                                  enrolledStudents: course.enrolledStudents,
+                                  createdAt: course.createdAt,
+                                  updatedAt: course.updatedAt,
+                                  v: course.v,
                                 ),
-                              )
-                              .toList(),
-                        ),
-                      );
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    );
+                  }
+
+                  if (state is HomeInstructorGetCoursesSuccess) {
+                    if (state.getCoursesResponseBody.data!.isEmpty) {
+                      return const Text("No Course Found");
                     }
-                    return const Text("Oops! Something went wrong.");
-                  },
-                ),
-              ],
-            ),
+                    final courses = state.getCoursesResponseBody.data!;
+                    return Expanded(
+                      child: GridView.count(
+                        crossAxisCount: 4,
+                        childAspectRatio: 1.5,
+                        padding: const EdgeInsets.all(8),
+                        children: courses
+                            .map(
+                              (course) => Container(
+                                margin: const EdgeInsets.all(4.0),
+                                padding: const EdgeInsets.all(2.0),
+                                child: UserCardAdmin(
+                                  id: course.id,
+                                  name: course.courseName,
+                                  instructorId: course.user?.userId,
+                                  category: course.category,
+                                  capacity: course.capacity,
+                                  published: course.published,
+                                  enrolledStudents: course.enrolledStudents,
+                                  createdAt: course.createdAt,
+                                  updatedAt: course.updatedAt,
+                                  v: course.v,
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    );
+                  }
+
+                  return Container();
+                },
+              ),
+            ],
           ),
         );
       },

@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                                 if (state is LoginSuccess) {
                                   final role = state.response.role;
 
-                                  print('aaaaaa777aaaaaaaEmail: $email');
+                                  print('meelooooo ahoooo Email: $email');
                                   print(role);
 
                                   if (role == 'student') {

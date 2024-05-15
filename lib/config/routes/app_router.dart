@@ -1,4 +1,5 @@
 import 'package:educate/features/home_instructor/presentation/manager/create/home_instructor_cubit.dart';
+import 'package:educate/features/home_instructor/presentation/pages/get_my_course.dart';
 import 'package:educate/features/role/choose_role.dart';
 import 'package:educate/features/signup_instructor/signup_instructor/presentation/pages/signup_instructor.dart';
 
@@ -67,18 +68,28 @@ class AppRouter {
         return PageTransition(
           settings: routeSettings,
           child: BlocProvider(
-            create: (BuildContext context) => getIt<HomeInstructorCubit>(),
+            create: (BuildContext context) => getIt<HomeInstructorCubit>()..getMyCourses(),
             child: const HomeInstructor(),
           ),
           type: PageTransitionType.fade,
         );
+
+
+
+      case AppRoutes.chooseRole:
+        return MaterialPageRoute(
+          settings: routeSettings,
+          builder: (context) => const GetMyCourse(),
+        );
+
+
 
       case AppRoutes.homeStudent:
         return PageTransition(
           settings: routeSettings,
           child: BlocProvider(
             create: (BuildContext context) => getIt<HomeStudentCubit>(),
-            child: const HomeStudent(),
+            child:  HomeStudent(),
           ),
           type: PageTransitionType.fade,
         );
