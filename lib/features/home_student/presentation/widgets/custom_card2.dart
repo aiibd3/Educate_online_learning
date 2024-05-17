@@ -32,7 +32,7 @@ class CustomCard2 extends StatelessWidget {
     required this.v,
   });
 
-  final _formKey = GlobalKey<FormState>();
+  // final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {

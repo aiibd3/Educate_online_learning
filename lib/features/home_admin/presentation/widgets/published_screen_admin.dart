@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routes/app_routes.dart';
-import '../../../home_student/presentation/widgets/custom_card2.dart';
 import 'edit_course_tap_admin.dart';
 
 class PublishedScreenAdmin extends StatelessWidget {
@@ -48,6 +47,7 @@ class PublishedScreenAdmin extends StatelessWidget {
                       (course) => Card(
                         margin: const EdgeInsets.all(4.0),
                         child: EditCourseTapAdmin(
+                          instructorName: course.user?.userName,
                           id: course.id,
                           name: course.courseName,
                           instructorId: course.user?.userId,

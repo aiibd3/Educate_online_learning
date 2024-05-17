@@ -155,6 +155,7 @@ class AppRouter {
           type: PageTransitionType.fade,
         );
 
+
       case AppRoutes.publishedCoursesAdmin:
         return PageTransition(
           settings: routeSettings,

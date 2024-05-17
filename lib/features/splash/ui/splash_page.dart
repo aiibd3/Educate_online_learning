@@ -3,7 +3,6 @@ import 'package:lottie/lottie.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import '../../../config/routes/app_routes.dart';
 import '../../../core/theme/app_assets.dart';
-import '../../login/presentation/pages/login.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

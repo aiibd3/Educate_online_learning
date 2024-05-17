@@ -112,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                   if (role == 'student') {
                                     TokenManager.token = state.response.token;
+
                                     Navigator.pushReplacementNamed(
                                         context, AppRoutes.homeStudent);
                                   } else if (role == 'instructor') {

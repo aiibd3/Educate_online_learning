@@ -2,7 +2,6 @@ class AppAssets {
   AppAssets._();
 
   static const String _image = "assets/images/";
-  static const String _icon = "assets/icons/";
   static const String _lottie = "assets/lottie/";
 
   static const String logo = "${_image}logo.png";

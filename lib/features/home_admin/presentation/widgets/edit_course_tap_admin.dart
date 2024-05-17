@@ -1,14 +1,18 @@
 import 'dart:core';
+import 'package:educate/config/di/di.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/theme/app_colors.dart';
+import '../../data/models/edit_course/edit_course_request_body.dart';
 import '../manager/home_admin_cubit.dart';
 
-class EditCourseTapAdmin extends StatelessWidget {
+class EditCourseTapAdmin extends StatefulWidget {
   final String? id;
   final String? name;
 
   final String? instructorId;
+
+  final String? instructorName;
+
   final String? category;
 
   final int? capacity;
@@ -18,9 +22,11 @@ class EditCourseTapAdmin extends StatelessWidget {
   // final List<dynamic>? reviews;
   final String? createdAt;
   final String? updatedAt;
+
   final int? v;
 
   EditCourseTapAdmin({
+    required this.instructorName,
     required this.id,
     required this.name,
     required this.instructorId,
@@ -34,11 +40,19 @@ class EditCourseTapAdmin extends StatelessWidget {
     required this.v,
   });
 
+  @override
+  State<EditCourseTapAdmin> createState() => _EditCourseTapAdminState();
+}
+
+class _EditCourseTapAdminState extends State<EditCourseTapAdmin> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _publishedController = TextEditingController();
+
   final TextEditingController _categoryController = TextEditingController();
+
   final TextEditingController _durationController = TextEditingController();
+
   final TextEditingController _capacityController = TextEditingController();
 
   @override
@@ -54,19 +68,20 @@ class EditCourseTapAdmin extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    'Course Name: $name',
+                    'Course Name: ${widget.name}',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () {
                       showDialog(
                         context: context,
-                        builder: (context) =>
-                            _buildCourseDetailsDialog(context),
+                        builder: (context) {
+                          return _buildCourseDetailsDialog(context);
+                        },
                       );
                     },
                     child: const Icon(
@@ -79,7 +94,7 @@ class EditCourseTapAdmin extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Category: $category',
+                'Category: ${widget.category}',
                 style: const TextStyle(
                   color: Colors.grey,
                   fontSize: 14,
@@ -95,7 +110,7 @@ class EditCourseTapAdmin extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Instructor : $instructorId',
+                    'Instructor : ${widget.instructorId}',
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 14,
@@ -113,7 +128,7 @@ class EditCourseTapAdmin extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Created At: $createdAt',
+                    'Created At: ${widget.createdAt}',
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 14,
@@ -131,7 +146,7 @@ class EditCourseTapAdmin extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Text(
-                    'Updated At: $updatedAt',
+                    'Updated At: ${widget.updatedAt}',
                     style: const TextStyle(
                       color: Colors.grey,
                       fontSize: 14,
@@ -147,152 +162,182 @@ class EditCourseTapAdmin extends StatelessWidget {
   }
 
   Widget _buildCourseDetailsDialog(BuildContext context) {
-    return Dialog(
-      elevation: 0,
-      backgroundColor: Colors.transparent,
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Center(
-              child: Container(
-                margin: const EdgeInsets.all(16.0),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<HomeAdminCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<HomeAdminCubit>(),
+        ),
+      ],
+      child: BlocBuilder<HomeAdminCubit, HomeAdminState>(
+        builder: (context, state) {
+          return Dialog(
+            elevation: 0,
+            backgroundColor: Colors.transparent,
+            child: SingleChildScrollView(
+              child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16.0),
-                ),
-                width: MediaQuery.of(context).size.width * 0.5,
-                height: MediaQuery.of(context).size.height * 0.7,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _publishedController,
-                        decoration:
-                            const InputDecoration(labelText: 'Published'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter published status';
-                          }
-                          return null;
-                        },
+                child: Form(
+                  key: _formKey,
+                  child: Center(
+                    child: Container(
+                      margin: const EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16.0),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _categoryController,
-                        decoration:
-                            const InputDecoration(labelText: 'Category'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a category';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _durationController,
-                        decoration:
-                            const InputDecoration(labelText: 'Duration'),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a duration';
-                          } else if (int.tryParse(value) == null) {
-                            return 'Please enter a valid number';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _capacityController,
-                        decoration:
-                            const InputDecoration(labelText: 'Capacity'),
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter a capacity';
-                          } else if (int.tryParse(value) == null) {
-                            return 'Please enter a valid number';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: BlocBuilder<HomeAdminCubit, HomeAdminState>(
-                          builder: (context, state) {
-                            return ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                fixedSize: const Size(100, 40),
-                                backgroundColor: Colors.black,
-                                foregroundColor: Colors.white,
-                              ),
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  Map<String, dynamic> course = {
-                                    "published": _publishedController.text,
-                                    "category": _categoryController.text,
-                                    "duration":
-                                        int.parse(_durationController.text),
-                                    "capacity":
-                                        int.parse(_capacityController.text),
-                                  };
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                          content: Text(
-                                              'Course updated successfully!')));
-                                  print(course);
-                                  print(course['published']);
-                                  print(course['category']);
-                                  print(course['duration']);
-                                  print(course['capacity']);
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      height: MediaQuery.of(context).size.height * 0.7,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _publishedController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Published'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter published status';
                                 }
+                                return null;
                               },
-                              child: const Text(
-                                'OKK',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16.0),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(100, 40),
-                            backgroundColor: Colors.black,
-                            foregroundColor: Colors.white,
+                            ),
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text('Cancel',
-                              style: TextStyle(color: Colors.white)),
-                        ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _categoryController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Category'),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a category';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _durationController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Duration'),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a duration';
+                                } else if (int.tryParse(value) == null) {
+                                  return 'Please enter a valid number';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              controller: _capacityController,
+                              decoration:
+                                  const InputDecoration(labelText: 'Capacity'),
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter a capacity';
+                                } else if (int.tryParse(value) == null) {
+                                  return 'Please enter a valid number';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: const Size(100, 40),
+                                    backgroundColor: Colors.black,
+                                    foregroundColor: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    if (state is EditCourseSuccessAdmin) {
+                                      if (_formKey.currentState!.validate()) {
+                                        final published =
+                                            _publishedController.text;
+                                        final category =
+                                            _categoryController.text;
+                                        final duration =
+                                            int.parse(_durationController.text);
+                                        final capacity =
+                                            int.parse(_capacityController.text);
+
+                                        final EditCourseRequestBody
+                                            requestBody = EditCourseRequestBody(
+                                          courseName: widget.name,
+                                          instructorName: widget.instructorName,
+                                          published: published,
+                                          category: category,
+                                          duration: duration,
+                                          capacity: capacity,
+                                        );
+                                        BlocProvider.of<HomeAdminCubit>(context)
+                                            .editCourse(requestBody);
+
+                                        Navigator.pop(context);
+
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Course updated successfully!'),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                                  child: const Text(
+                                    'OKK',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16.0),
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    fixedSize: const Size(100, 40),
+                                    backgroundColor: Colors.black,
+                                    foregroundColor: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancel',
+                                      style: TextStyle(color: Colors.white)),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                    ])
-                  ],
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
