@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:educate/features/login/data/models/Login_request_body.dart';
 import 'package:injectable/injectable.dart';
+import '../../../features/home_admin/data/models/edit_course/edit_course_request_body.dart';
+import '../../../features/home_admin/data/models/edit_course/edit_course_response_body.dart';
 import '../../../features/home_admin/data/models/unPublished_response_body.dart';
 import '../../../features/home_instructor/data/models/create/Create_course_Request_body.dart';
 import '../../../features/home_instructor/data/models/create/Create_course_response_body.dart';
@@ -185,6 +187,17 @@ class ApiService {
       };
       final response = await dio2.get(EndPoints.unPublishCourse);
       return UnPublishedResponseBody.fromJson(response.data);
+    } on DioException catch (e) {
+      throw Exception("API Error: ${e.toString()}");
+    }
+  }
+
+  Future<EditCourseResponseBody> editCourse(
+      EditCourseRequestBody editCourseRequestBody) async {
+    try {
+      final response = await dio2.put(EndPoints.updateCourse,
+          data: editCourseRequestBody.toJson());
+      return EditCourseResponseBody.fromJson(response.data);
     } on DioException catch (e) {
       throw Exception("API Error: ${e.toString()}");
     }

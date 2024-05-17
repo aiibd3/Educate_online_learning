@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../config/routes/app_routes.dart';
 import '../../../home_student/presentation/widgets/custom_card2.dart';
+import 'edit_course_tap_admin.dart';
 
 class UnPublishedScreenAdmin extends StatelessWidget {
   const UnPublishedScreenAdmin({super.key});
@@ -46,7 +47,7 @@ class UnPublishedScreenAdmin extends StatelessWidget {
                     .map(
                       (course) => Card(
                         margin: const EdgeInsets.all(4.0),
-                        child: CustomCard2(
+                        child: EditCourseTapAdmin(
                           id: course.id,
                           name: course.courseName,
                           instructorId: course.user?.userId,

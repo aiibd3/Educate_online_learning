@@ -77,7 +77,7 @@ class HomeAdmin extends StatelessWidget {
                       child: Row(
                         children: [
                           const Icon(
-                            Icons.library_books,
+                            Icons.library_books_outlined,
                             size: 20,
                             color: Colors.white,
                           ),
@@ -98,6 +98,7 @@ class HomeAdmin extends StatelessWidget {
                         ],
                       ),
                     ),
+
                   ],
                 ),
               ),

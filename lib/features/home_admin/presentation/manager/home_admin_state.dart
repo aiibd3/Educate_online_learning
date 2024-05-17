@@ -24,3 +24,9 @@ final class UnPublishedSuccessAdmin extends HomeAdminState {
 
   UnPublishedSuccessAdmin(this.unPublishedResponseBody);
 }
+
+final class EditCourseSuccessAdmin extends HomeAdminState {
+  final EditCourseResponseBody editCourseResponseBody;
+
+  EditCourseSuccessAdmin(this.editCourseResponseBody);
+}

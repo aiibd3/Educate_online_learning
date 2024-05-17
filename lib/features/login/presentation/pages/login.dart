@@ -125,6 +125,10 @@ class _LoginPageState extends State<LoginPage> {
                                     Navigator.pushReplacementNamed(
                                         context, AppRoutes.adminHome);
                                   }
+
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                      content: Text('Login successfully!')));
+
                                 }
 
                                 if (state is LoginInitial) {

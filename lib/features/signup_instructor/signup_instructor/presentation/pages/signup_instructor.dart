@@ -182,6 +182,11 @@ class _SignUpInstructorState extends State<SignUpInstructor> {
                                     yearsOfExperience: yearOfExperience,
                                     role: "instructor");
 
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content:
+                                            Text('Sign Up successfully!')));
+
                                 BlocProvider.of<SignupInstructorCubit>(context)
                                     .signup(requestBody);
                                 Navigator.pushReplacementNamed(

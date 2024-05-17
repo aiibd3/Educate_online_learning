@@ -24,4 +24,6 @@ class EndPoints {
   static String publishCourse = "$course/getPublishedCourses";
 
   static String unPublishCourse = "$course/getUnPublishedCourses";
+
+  static String updateCourse = "$course/update";
 }

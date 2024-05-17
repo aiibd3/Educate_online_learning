@@ -1,11 +1,9 @@
 import 'package:educate/features/home_instructor/presentation/manager/create/home_instructor_cubit.dart';
 import 'package:educate/features/role/choose_role.dart';
 import 'package:educate/features/signup_instructor/signup_instructor/presentation/pages/signup_instructor.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
-
 import '../../features/home_admin/presentation/manager/home_admin_cubit.dart';
 import '../../features/home_admin/presentation/pages/home_admin.dart';
 import '../../features/home_admin/presentation/widgets/published_screen_admin.dart';
@@ -178,6 +176,8 @@ class AppRouter {
           ),
           type: PageTransitionType.fade,
         );
+
+
     }
 
     return null;

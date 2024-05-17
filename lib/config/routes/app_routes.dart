@@ -10,21 +10,14 @@ class AppRoutes {
   static const String homeStudent = '/homeStudent';
   static const String homeInstructor = '/homeInstructor';
 
-
-
   // instructor routes
   static const String publishedCoursesInstructor = '/PublishedCourses';
   static const String searchCoursesInstructor = '/search';
   static const String myCoursesInstructor = '/myCourses';
 
-
-
   // student routes
   static const String publishedCoursesStudent = '/PublishedCoursesStudent';
   static const String searchCoursesStudent = '/searchStudent';
-
-
-
 
   // admin routes
   static const String adminHome = '/adminHome';
@@ -32,9 +25,7 @@ class AppRoutes {
   static const String publishedCoursesAdmin = '/PublishedCoursesAdmin';
   static const String unpublishedCoursesAdmin = '/unPublishedCoursesAdmin';
 
-  // static const String searchCoursesAdmin = '/searchAdmin';
+  static const String editCourseAdmin = '/editCourseAdmin';
 
-
-
-
+// static const String searchCoursesAdmin = '/searchAdmin';
 }

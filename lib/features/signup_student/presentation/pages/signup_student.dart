@@ -148,6 +148,9 @@ class SignUpStudent extends StatelessWidget {
                                 confirmPassword: confirmPassword,
                                 role: "student");
 
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                                content: Text('Sign Up successfully!')));
+
                             BlocProvider.of<SignupStudentCubit>(context)
                                 .signupS(requestBody);
                             Navigator.pushReplacementNamed(context, '/login');

@@ -25,7 +25,6 @@ class _HomeInstructorState extends State<HomeInstructor> {
 
   @override
   Widget build(BuildContext context) {
-
     return BlocBuilder<HomeInstructorCubit, HomeInstructorState>(
       builder: (context, state) {
         return Scaffold(
@@ -152,6 +151,11 @@ class _HomeInstructorState extends State<HomeInstructor> {
                                     duration: duration,
                                     capacity: capacity,
                                     category: category);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('Course created successfully!')));
 
                             BlocProvider.of<HomeInstructorCubit>(context)
                                 .createCourse(createCourseRequestBody);
@@ -284,7 +288,7 @@ class _HomeInstructorState extends State<HomeInstructor> {
                     ],
                   ),
                 ),
-                 SizedBox(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.2,
                 ),
                 const Text(
