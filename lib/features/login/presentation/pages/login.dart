@@ -121,7 +121,9 @@ class _LoginPageState extends State<LoginPage> {
                                   } else if (role == 'admin') {
                                     TokenManager.token = state.response.token;
                                     print(TokenManager.token);
-                                    // Navigator.pushNamed(context, AppRoutes.adminHome);
+
+                                    Navigator.pushReplacementNamed(
+                                        context, AppRoutes.adminHome);
                                   }
                                 }
 

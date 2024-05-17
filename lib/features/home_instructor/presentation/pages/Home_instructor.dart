@@ -5,7 +5,6 @@ import 'package:side_sheet/side_sheet.dart';
 import '../../../../config/routes/app_routes.dart';
 import '../../data/models/create/Create_course_Request_body.dart';
 import '../manager/create/home_instructor_cubit.dart';
-import '../widgets/CustomCard.dart';
 
 class HomeInstructor extends StatefulWidget {
   const HomeInstructor({super.key});
@@ -16,7 +15,6 @@ class HomeInstructor extends StatefulWidget {
 
 class _HomeInstructorState extends State<HomeInstructor> {
   final TextEditingController _nameCourseController = TextEditingController();
-  final TextEditingController _searchCourseController = TextEditingController();
   final TextEditingController _durationCourseController =
       TextEditingController();
   final TextEditingController _capacityCourseController =
@@ -27,6 +25,7 @@ class _HomeInstructorState extends State<HomeInstructor> {
 
   @override
   Widget build(BuildContext context) {
+
     return BlocBuilder<HomeInstructorCubit, HomeInstructorState>(
       builder: (context, state) {
         return Scaffold(
@@ -41,7 +40,10 @@ class _HomeInstructorState extends State<HomeInstructor> {
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.logout, color: Colors.white),
+                icon: const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Icon(Icons.logout, color: Colors.white),
+                ),
                 onPressed: () {
                   Navigator.of(context).pushReplacementNamed(AppRoutes.login);
                 },
@@ -185,127 +187,116 @@ class _HomeInstructorState extends State<HomeInstructor> {
             },
             child: const Icon(Icons.add),
           ),
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
+          body: Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            color: Colors.grey[300],
+            child: Row(
+              children: [
+                Container(
                   color: Colors.white,
-                  child: TextFormField(
-                    controller: _searchCourseController,
-                    decoration: InputDecoration(
-                      hintText: "Search Course",
-                      prefixIcon: InkWell(
-                        onTap: () {
-                          BlocProvider.of<HomeInstructorCubit>(context)
-                              .search(_searchCourseController.text);
-                        },
-                        child: const Icon(Icons.search),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    // mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Image.asset(
+                        "assets/images/educateB.png",
+                        width: 150,
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.home,
+                              size: 20,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(width: 4),
+                            MaterialButton(
+                              onPressed: () {
+                                Navigator.of(context).pushReplacementNamed(
+                                    AppRoutes.myCoursesInstructor);
+                              },
+                              child: const Text(
+                                'My Courses',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.search,
+                              size: 20,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(width: 4),
+                            MaterialButton(
+                              onPressed: () {
+                                Navigator.of(context).pushReplacementNamed(
+                                    AppRoutes.searchCoursesInstructor);
+                              },
+                              child: const Text(
+                                'Search',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.library_books,
+                              size: 20,
+                              color: Colors.black,
+                            ),
+                            const SizedBox(width: 4),
+                            MaterialButton(
+                              onPressed: () {
+                                Navigator.of(context).pushReplacementNamed(
+                                    AppRoutes.publishedCoursesInstructor);
+                              },
+                              child: const Text(
+                                'Published',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              BlocBuilder<HomeInstructorCubit, HomeInstructorState>(
-                builder: (context, state) {
-                  if (state is HomeInstructorInitial) {
-                    return const Text(
-                      "Search Course",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    );
-                  }
-
-                  if (state is HomeInstructorLoading) {
-                    return const CircularProgressIndicator();
-                  }
-
-                  if (state is HomeInstructorError) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text("Sorry No Course Found",
-                        style:  TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                      ),
-                    );
-                  }
-                  if (state is SearchSuccess) {
-                    if (state.data.isEmpty) {
-                      return const Text("No Course Found");
-                    }
-
-                    var courses = state.data;
-
-                    return Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        childAspectRatio: 2.5,
-                        padding: const EdgeInsets.all(8),
-                        children: courses
-                            .map(
-                              (course) => Container(
-                                margin: const EdgeInsets.all(4.0),
-                                padding: const EdgeInsets.all(2.0),
-                                child: UserCardAdmin(
-                                  id: course.id,
-                                  name: course.courseName,
-                                  instructorId: course.user?.userId,
-                                  category: course.category,
-                                  capacity: course.capacity,
-                                  published: course.published,
-                                  enrolledStudents: course.enrolledStudents,
-                                  createdAt: course.createdAt,
-                                  updatedAt: course.updatedAt,
-                                  v: course.v,
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    );
-                  }
-
-                  if (state is HomeInstructorGetCoursesSuccess) {
-                    if (state.getCoursesResponseBody.data!.isEmpty) {
-                      return const Text("No Course Found");
-                    }
-                    final courses = state.getCoursesResponseBody.data!;
-                    return Expanded(
-                      child: GridView.count(
-                        crossAxisCount: 4,
-                        childAspectRatio: 1.5,
-                        padding: const EdgeInsets.all(8),
-                        children: courses
-                            .map(
-                              (course) => Container(
-                                margin: const EdgeInsets.all(4.0),
-                                padding: const EdgeInsets.all(2.0),
-                                child: UserCardAdmin(
-                                  id: course.id,
-                                  name: course.courseName,
-                                  instructorId: course.user?.userId,
-                                  category: course.category,
-                                  capacity: course.capacity,
-                                  published: course.published,
-                                  enrolledStudents: course.enrolledStudents,
-                                  createdAt: course.createdAt,
-                                  updatedAt: course.updatedAt,
-                                  v: course.v,
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    );
-                  }
-
-                  return Container();
-                },
-              ),
-            ],
+                 SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.2,
+                ),
+                const Text(
+                  "Hello Instructor, Welcome to your dashboard ;)",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },

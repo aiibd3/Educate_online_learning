@@ -11,5 +11,30 @@ class AppRoutes {
   static const String homeInstructor = '/homeInstructor';
 
 
-  static const String getMyCourse = '/getMyCourse';
+
+  // instructor routes
+  static const String publishedCoursesInstructor = '/PublishedCourses';
+  static const String searchCoursesInstructor = '/search';
+  static const String myCoursesInstructor = '/myCourses';
+
+
+
+  // student routes
+  static const String publishedCoursesStudent = '/PublishedCoursesStudent';
+  static const String searchCoursesStudent = '/searchStudent';
+
+
+
+
+  // admin routes
+  static const String adminHome = '/adminHome';
+
+  static const String publishedCoursesAdmin = '/PublishedCoursesAdmin';
+  static const String unpublishedCoursesAdmin = '/unPublishedCoursesAdmin';
+
+  // static const String searchCoursesAdmin = '/searchAdmin';
+
+
+
+
 }

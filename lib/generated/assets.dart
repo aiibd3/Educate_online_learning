@@ -2,6 +2,17 @@
 class Assets {
   Assets._();
 
+  static const String imagesEducateB = 'assets/images/educateB.png';
+  static const String imagesEducateW = 'assets/images/educateW.png';
+  static const String imagesLogo33 = 'assets/images/logo33.png';
+  static const String imagesLogowhite44 = 'assets/images/logowhite44.png';
+  static const String imagesLoupe = 'assets/images/loupe.png';
+  static const String lottie333 = 'assets/lottie/333.json';
+  static const String lottieAnimation632546023 = 'assets/lottie/Animation632546023.json';
   static const String lottieLoading = 'assets/lottie/loading.json';
+  static const String lottieLoading2 = 'assets/lottie/loading2.json';
+  static const String lottieLoading3 = 'assets/lottie/loading3.json';
+  static const String lottieSearch = 'assets/lottie/search.json';
+  static const String lottieSearch3 = 'assets/lottie/search3.json';
 
 }

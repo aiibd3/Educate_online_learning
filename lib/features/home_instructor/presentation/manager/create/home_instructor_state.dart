@@ -48,3 +48,9 @@ final class SearchSuccess extends HomeInstructorState {
 
   SearchSuccess(this.data);
 }
+
+final class PublishedSuccessInstructor extends HomeInstructorState {
+  final PublishedResponseBody publishedResponseBody;
+
+  PublishedSuccessInstructor(this.publishedResponseBody);
+}

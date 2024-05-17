@@ -20,4 +20,8 @@ class EndPoints {
   static String searchName = "$course/searchName";
 
   static String myCourses = "$course/myCourses";
+
+  static String publishCourse = "$course/getPublishedCourses";
+
+  static String unPublishCourse = "$course/getUnPublishedCourses";
 }

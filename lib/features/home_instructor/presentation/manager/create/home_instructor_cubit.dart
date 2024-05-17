@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
+import '../../../../../core/models/published/published_response_body.dart';
 import '../../../../../core/models/searchCategory/search_category_response_body.dart'
     as gt;
 import '../../../../../core/models/searchName/search_response_body.dart' as sr;
@@ -24,20 +25,6 @@ class HomeInstructorCubit extends Cubit<HomeInstructorState> {
     try {
       final response = await _apiService.createCourse(createCourseRequestBody);
       emit(HomeInstructorSuccess(response));
-    } on Exception catch (e) {
-      emit(
-        HomeInstructorError(
-          message: e.toString(),
-        ),
-      );
-    }
-  }
-
-  Future<void> getMyCourses() async {
-    emit(HomeInstructorLoading());
-    try {
-      final response = await _apiService.getMyCourses();
-      emit(HomeInstructorGetCoursesSuccess(response));
     } on Exception catch (e) {
       emit(
         HomeInstructorError(
@@ -86,6 +73,39 @@ class HomeInstructorCubit extends Cubit<HomeInstructorState> {
       }
 
       emit(SearchSuccess(allCourses));
+    }
+  }
+
+  Future<void> getMyCourses() async {
+    emit(HomeInstructorLoading());
+    try {
+      final response = await _apiService.getMyCourses();
+      emit(HomeInstructorGetCoursesSuccess(response));
+    } on Exception catch (e) {
+      emit(
+        HomeInstructorError(
+          message: e.toString(),
+        ),
+      );
+    }
+  }
+
+  Future<void> publishedCourses() async {
+    emit(HomeInstructorLoading());
+    try {
+      final publishedResponse = await _apiService.publishedCourse();
+      emit(PublishedSuccessInstructor(publishedResponse));
+    } catch (e) {
+      emit(HomeInstructorError(message: "Failed to load data"));
+    }
+  }
+
+  Future<void> loadAllCourses() async {
+    emit(HomeInstructorLoading());
+    try {
+      await Future.wait([publishedCourses(), getMyCourses()]);
+    } catch (e) {
+      emit(HomeInstructorError(message: "Failed to load all courses"));
     }
   }
 }
