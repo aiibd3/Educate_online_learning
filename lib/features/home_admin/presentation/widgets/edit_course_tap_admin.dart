@@ -8,33 +8,28 @@ import '../manager/home_admin_cubit.dart';
 class EditCourseTapAdmin extends StatefulWidget {
   final String? id;
   final String? name;
-
   final String? instructorId;
-
   final String? instructorName;
-
   final String? category;
-
+  final int? duration;
   final int? capacity;
   final bool? published;
   final int? enrolledStudents;
-
-  // final List<dynamic>? reviews;
   final String? createdAt;
   final String? updatedAt;
-
   final int? v;
 
-  EditCourseTapAdmin({
+  const EditCourseTapAdmin({
+    super.key,
     required this.instructorName,
     required this.id,
     required this.name,
     required this.instructorId,
     required this.category,
+    required this.duration,
     required this.capacity,
     required this.published,
     required this.enrolledStudents,
-    // required this.reviews,
     required this.createdAt,
     required this.updatedAt,
     required this.v,
@@ -46,118 +41,136 @@ class EditCourseTapAdmin extends StatefulWidget {
 
 class _EditCourseTapAdminState extends State<EditCourseTapAdmin> {
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _publishedController = TextEditingController();
-
   final TextEditingController _categoryController = TextEditingController();
-
   final TextEditingController _durationController = TextEditingController();
-
   final TextEditingController _capacityController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _publishedController.text = widget.published?.toString() ?? '';
+    _categoryController.text = widget.category ?? '';
+    _durationController.text =
+        widget.duration?.toString() ?? ''; // Assuming duration is not provided
+    _capacityController.text = widget.capacity?.toString() ?? '';
+  }
+
+  @override
+  void dispose() {
+    _publishedController.dispose();
+    _categoryController.dispose();
+    _durationController.dispose();
+    _capacityController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    'Course Name: ${widget.name}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+    return Container(
+      color: Colors.grey.shade200,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Course Name: ${widget.name}',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
                     ),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return _buildCourseDetailsDialog(context);
-                        },
-                      );
-                    },
-                    child: const Icon(
-                      Icons.edit,
-                      color: Colors.black,
-                      size: 24,
-                    ),
-                  )
-                ],
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Category: ${widget.category}',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return _buildCourseDetailsDialog(context);
+                          },
+                        );
+                      },
+                      child: const Icon(
+                        Icons.edit,
+                        color: Colors.black,
+                        size: 24,
+                      ),
+                    )
+                  ],
                 ),
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.person,
-                    size: 16,
+                const SizedBox(height: 4),
+                Text(
+                  'Category: ${widget.category}',
+                  style: const TextStyle(
                     color: Colors.grey,
+                    fontSize: 14,
                   ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Instructor : ${widget.instructorId}',
-                    style: const TextStyle(
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.person,
+                      size: 16,
                       color: Colors.grey,
-                      fontSize: 14,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.calendar_today,
-                    size: 16,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Created At: ${widget.createdAt}',
-                    style: const TextStyle(
+                    const SizedBox(width: 4),
+                    Text(
+                      'Instructor : ${widget.instructorId}',
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_today,
+                      size: 16,
                       color: Colors.grey,
-                      fontSize: 14,
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.calendar_today,
-                    size: 16,
-                    color: Colors.grey,
-                  ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Updated At: ${widget.updatedAt}',
-                    style: const TextStyle(
+                    const SizedBox(width: 4),
+                    Text(
+                      'Created At: ${widget.createdAt}',
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_today,
+                      size: 16,
                       color: Colors.grey,
-                      fontSize: 14,
                     ),
-                  ),
-                ],
-              ),
-            ],
+                    const SizedBox(width: 4),
+                    Text(
+                      'Updated At: ${widget.updatedAt}',
+                      style: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -167,11 +180,24 @@ class _EditCourseTapAdminState extends State<EditCourseTapAdmin> {
         BlocProvider(
           create: (context) => getIt<HomeAdminCubit>(),
         ),
-        BlocProvider(
-          create: (context) => getIt<HomeAdminCubit>(),
-        ),
       ],
-      child: BlocBuilder<HomeAdminCubit, HomeAdminState>(
+      child: BlocConsumer<HomeAdminCubit, HomeAdminState>(
+        listener: (context, state) {
+          if (state is EditCourseSuccessAdmin) {
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Course updated successfully!'),
+              ),
+            );
+          } else if (state is HomeAdminError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Failed to update course: ${state.message}'),
+              ),
+            );
+          }
+        },
         builder: (context, state) {
           return Dialog(
             elevation: 0,
@@ -269,43 +295,31 @@ class _EditCourseTapAdminState extends State<EditCourseTapAdmin> {
                                     foregroundColor: Colors.white,
                                   ),
                                   onPressed: () {
-                                    if (state is EditCourseSuccessAdmin) {
-                                      if (_formKey.currentState!.validate()) {
-                                        final published =
-                                            _publishedController.text;
-                                        final category =
-                                            _categoryController.text;
-                                        final duration =
-                                            int.parse(_durationController.text);
-                                        final capacity =
-                                            int.parse(_capacityController.text);
+                                    if (_formKey.currentState!.validate()) {
+                                      final published =
+                                          _publishedController.text;
+                                      final category = _categoryController.text;
+                                      final duration =
+                                          int.parse(_durationController.text);
+                                      final capacity =
+                                          int.parse(_capacityController.text);
 
-                                        final EditCourseRequestBody
-                                            requestBody = EditCourseRequestBody(
-                                          courseName: widget.name,
-                                          instructorName: widget.instructorName,
-                                          published: published,
-                                          category: category,
-                                          duration: duration,
-                                          capacity: capacity,
-                                        );
-                                        BlocProvider.of<HomeAdminCubit>(context)
-                                            .editCourse(requestBody);
+                                      final EditCourseRequestBody requestBody =
+                                          EditCourseRequestBody(
+                                        courseName: widget.name,
+                                        instructorName: widget.instructorName,
+                                        published: published,
+                                        category: category,
+                                        duration: duration,
+                                        capacity: capacity,
+                                      );
 
-                                        Navigator.pop(context);
-
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text(
-                                                'Course updated successfully!'),
-                                          ),
-                                        );
-                                      }
+                                      BlocProvider.of<HomeAdminCubit>(context)
+                                          .editCourse(requestBody);
                                     }
                                   },
                                   child: const Text(
-                                    'OKK',
+                                    'OK',
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ),

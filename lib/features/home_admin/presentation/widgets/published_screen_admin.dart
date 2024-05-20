@@ -53,6 +53,7 @@ class PublishedScreenAdmin extends StatelessWidget {
                           instructorId: course.user?.userId,
                           category: course.category,
                           capacity: course.capacity,
+                          duration: course.duration,
                           published: course.published,
                           enrolledStudents: course.enrolledStudents,
                           createdAt: course.createdAt,

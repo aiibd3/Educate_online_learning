@@ -58,6 +58,7 @@ class UnPublishedScreenAdmin extends StatelessWidget {
                           createdAt: course.createdAt,
                           updatedAt: course.updatedAt,
                           v: course.v,
+                          duration: course.duration,
                         ),
                       ),
                     )
